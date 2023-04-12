@@ -1,18 +1,22 @@
 import { FunctionComponent, useRef, useState } from "react";
 import { readOnLoad } from "../../helpers";
+import { IDataByPair } from "../../helpers/types";
 
-interface CsvInputFormProps {}
+interface CsvInputFormProps {
+  setData: React.Dispatch<React.SetStateAction<IDataByPair>>;
+}
 
-export const CsvInputForm: FunctionComponent<CsvInputFormProps> = () => {
+export const CsvInputForm: FunctionComponent<CsvInputFormProps> = ({
+  setData,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  // const [data, setData] = useState({});
 
   const handleFileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const reader = new FileReader();
     const file = inputRef.current?.files ? inputRef.current.files[0] : null;
     if (!file) return;
-    reader.onload = (e) => readOnLoad(e);
+    reader.onload = (e) => readOnLoad(e, setData);
     reader.readAsText(file);
   };
 

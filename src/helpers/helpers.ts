@@ -1,22 +1,12 @@
+import { IDataByPair, IDataByProject, IDataEntry } from "./types";
+
 export const getRealValue = (string: string) => {
   return string
     .trim()
     .replace(/\r?\n|\r/g, " ")
     .split(" ");
 };
-
-interface IDataEntry {
-  employeeId: string;
-  projectId: string;
-  dateFrom: number;
-  dateTo: number;
-}
-
-interface IDataByProject {
-  [key: string]: IDataEntry[];
-}
-
-export const readOnLoad = (e: ProgressEvent<FileReader>) => {
+export const readOnLoad = (e: ProgressEvent<FileReader>, setter: any) => {
   const text: any = e.target?.result;
   const splittedValues: string[] = text.split(", ");
   const result: string[] = [];
@@ -50,7 +40,7 @@ export const readOnLoad = (e: ProgressEvent<FileReader>) => {
     }
   }
 
-  getDataByPair(dataByProject);
+  setter(getDataByPair(dataByProject));
 };
 
 const dateInDays = (date: string) => {
@@ -72,7 +62,7 @@ const getOverlappingDays = (person1: IDataEntry, person2: IDataEntry) => {
 };
 
 const getDataByPair = (data: IDataByProject) => {
-  const dataByPair: any = {};
+  const dataByPair: IDataByPair = {};
   const dataToArray = Object.values(data);
 
   for (const project of dataToArray) {
@@ -93,5 +83,5 @@ const getDataByPair = (data: IDataByProject) => {
     }
   }
 
-  console.log(dataByPair);
+  return dataByPair;
 };
