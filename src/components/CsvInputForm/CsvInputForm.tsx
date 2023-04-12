@@ -1,38 +1,23 @@
-import { FunctionComponent, useRef } from "react";
+import { FunctionComponent, useRef, useState } from "react";
+import { readOnLoad } from "../../helpers";
 
 interface CsvInputFormProps {}
 
 export const CsvInputForm: FunctionComponent<CsvInputFormProps> = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  // const [data, setData] = useState({});
 
-  const getRealValue = (string: string) => {
-    return string
-      .trim()
-      .replace(/\r?\n|\r/g, " ")
-      .split(" ");
+  const handleFileSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = inputRef.current?.files ? inputRef.current.files[0] : null;
+    if (!file) return;
+    reader.onload = (e) => readOnLoad(e);
+    reader.readAsText(file);
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        const reader = new FileReader();
-        const file = inputRef.current?.files ? inputRef.current.files[0] : null;
-        if (!file) return;
-        reader.onload = function (e) {
-          const text: any = e.target?.result;
-          const splittedValues: string[] = text.split(", ");
-          const result: string[] = [];
-          for (let i = 0; i < splittedValues.length; i++) {
-            const currentEntry = splittedValues[i];
-            const trueValue = getRealValue(currentEntry);
-            trueValue.map((value: string) => result.push(value));
-          }
-          console.log(result);
-        };
-        reader.readAsText(file);
-      }}
-    >
+    <form onSubmit={handleFileSubmit}>
       <input ref={inputRef} type="file" accept=".csv" />
       <button type="submit">Submit</button>
     </form>
