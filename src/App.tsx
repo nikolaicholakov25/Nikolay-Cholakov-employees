@@ -19,6 +19,7 @@ function App() {
             <th>Empoyee ID # 2</th>
             <th>Project ID</th>
             <th>Days Together</th>
+            <th>Days Together including the last day</th>
           </tr>
         </thead>
         <tbody>
@@ -32,17 +33,11 @@ function App() {
                   <td>{emp2}</td>
                   <td>{projectId}</td>
                   <td>{timeTogether} Days</td>
+                  <td>{timeTogether + 1} Days</td>
                 </tr>
               );
             })
           )}
-
-          {/* <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>21</td>
-            <td>10 days</td>
-          </tr> */}
         </tbody>
       </table>
     </div>

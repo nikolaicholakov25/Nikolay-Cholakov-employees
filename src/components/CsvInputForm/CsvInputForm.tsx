@@ -13,6 +13,7 @@ export const CsvInputForm: FunctionComponent<CsvInputFormProps> = ({
 
   const handleFileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setData({});
     const reader = new FileReader();
     const file = inputRef.current?.files ? inputRef.current.files[0] : null;
     if (!file) return;
